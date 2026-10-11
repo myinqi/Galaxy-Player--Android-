@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Galaxy Player</title>
+<link rel="stylesheet" href="galaxy-player.css">
+</head>
+<body>
+<div id="galaxy-app" class="galaxy-app" data-csrf="" data-logo-discord="trya-logo.png" data-logo-suno="suno-logo.png" data-logo-wlm="wlm-logo.png">
+<header class="galaxy-top">
+<a class="galaxy-brand" href="index.html"><img class="galaxy-brand-mark" src="galaxy-mark.svg" alt=""><span><strong>Galaxy Player</strong><small>BY BETSY</small></span></a>
+<div class="galaxy-identity"><span>Explorer</span></div>
+<div class="galaxy-controls">
+<div class="galaxy-source"><img id="galaxy-source-logo" class="galaxy-source-logo" src="trya-logo.png" alt="TrYa"><select id="galaxy-source" aria-label="Music source"><option value="discord">Discord showcase</option></select></div>
+<select id="galaxy-collection" aria-label="Collection"><option value="">Choose a channel</option></select>
+<select id="galaxy-days" aria-label="Time range"><option value="1">1 day</option><option value="3">3 days</option><option value="7" selected>7 days</option><option value="14">14 days</option><option value="30">30 days</option></select>
+<label class="galaxy-limit-row">max. songs<input id="galaxy-limit" type="number" min="5" max="75" value="30"></label>
+<button id="galaxy-launch" class="galaxy-button primary" type="button">Launch expedition</button>
+<button id="galaxy-center" class="galaxy-button" type="button">Center map</button>
+<button id="galaxy-settings" class="galaxy-button" type="button">Connection</button>
+</div>
+</header>
+<main class="galaxy-main">
+<section class="galaxy-map-wrap">
+<canvas id="galaxy-map" aria-label="Interactive Galaxy expedition map"></canvas>
+<div class="galaxy-hud">
+<small id="galaxy-flight-state">AWAITING EXPEDITION</small>
+<h1 id="galaxy-planet-title">Choose a music source</h1>
+<p id="galaxy-planet-artist">Launch an expedition to generate your star system.</p>
+<p id="galaxy-planet-suno" hidden></p>
+<p id="galaxy-planet-info"></p>
+<div class="galaxy-hud-actions"><a id="galaxy-song-link" href="#" target="_blank" rel="noreferrer" hidden>Open on Suno ↗</a><button type="button" id="galaxy-bookmark" class="galaxy-bookmark" hidden>Bookmark</button></div>
+<div class="galaxy-flight"><span id="galaxy-flight-progress"></span></div>
+</div>
+<article id="galaxy-media" class="galaxy-media" hidden>
+<div class="galaxy-media-heading"><span>SONG TRANSMISSION</span><span id="galaxy-media-source"></span><button id="galaxy-media-close" type="button" aria-label="Close song details">×</button></div>
+<div class="galaxy-media-frame"><img id="galaxy-artwork" src="" alt=""><video id="galaxy-video" loop muted playsinline preload="metadata"></video></div>
+<strong id="galaxy-media-title"></strong>
+<small id="galaxy-media-artist"></small>
+<div id="galaxy-rating" class="galaxy-rating" hidden><span>Rate on this device</span><div role="radiogroup" aria-label="Rate this track"><button type="button" data-rating="1" aria-label="1 stars">★</button><button type="button" data-rating="2" aria-label="2 stars">★</button><button type="button" data-rating="3" aria-label="3 stars">★</button><button type="button" data-rating="4" aria-label="4 stars">★</button><button type="button" data-rating="5" aria-label="5 stars">★</button></div></div>
+<div id="galaxy-artist" class="galaxy-artist" hidden><img src="" alt=""><div><strong></strong><small></small></div><button type="button">Explore artist</button></div>
+</article>
+</section>
+<aside class="galaxy-side">
+<section class="galaxy-panel galaxy-profile"><p class="galaxy-kicker">EXPLORER PROFILE</p><strong id="galaxy-credits">0 cr</strong><span id="galaxy-loadout">Scout · Ion Blue · Pulse Scanner</span></section>
+<section id="galaxy-shop-panel" class="galaxy-panel"><div class="galaxy-panel-heading"><div><p class="galaxy-kicker">SHIPYARD</p><h2>Explorer shop</h2></div><button id="galaxy-shop-toggle" type="button" aria-expanded="true">−</button></div><div id="galaxy-shop"><p class="galaxy-muted">Loading upgrades…</p></div></section>
+<section class="galaxy-panel galaxy-navigation"><p class="galaxy-kicker">NAVIGATION</p><h2>Flight preferences</h2><label><input id="galaxy-auto" type="checkbox" checked><span>Continue automatically after arrival</span></label><label><input id="galaxy-skip" type="checkbox" checked><span>Skip songs already heard in full</span></label><label id="galaxy-speed-row" hidden><input id="galaxy-speed" type="checkbox"><span>Use equipped playback drive</span></label><p>Click any planet to reroute. Forward seeking reduces expedition credits. Credits, the shipyard and bookmarks stay on this device.</p></section>
+<section class="galaxy-panel" id="galaxy-bookmarks-panel"><div class="galaxy-panel-heading"><div><p class="galaxy-kicker">ON THIS DEVICE</p><h2>Bookmarks</h2></div><button id="galaxy-bookmarks-clear" type="button" hidden>Clear</button></div><div id="galaxy-bookmarks"><p class="galaxy-muted">No bookmarked songs yet.</p></div></section>
+</aside>
+</main>
+<footer class="galaxy-bottom">
+<button id="galaxy-play" class="galaxy-play" type="button" disabled aria-label="Play"><svg class="galaxy-play-icon galaxy-play-start" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.2v13.6L19.5 12z"/></svg><svg class="galaxy-play-icon galaxy-play-stop" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4.2" height="14" rx="1.2"/><rect x="13.8" y="5" width="4.2" height="14" rx="1.2"/></svg></button>
+<button type="button" id="galaxy-bookmark-bar" class="galaxy-bookmark" hidden>Bookmark</button>
+<div class="galaxy-timeline"><span id="galaxy-elapsed">0:00</span><input id="galaxy-seek" type="range" min="0" max="1000" value="0" aria-label="Seek"><span id="galaxy-duration">0:00</span></div>
+<label class="galaxy-volume"><span>VOL</span><input id="galaxy-volume" type="range" min="0" max="100" value="80" aria-label="Volume"></label>
+<div class="galaxy-now"><strong id="galaxy-now-title">No song selected</strong><span id="galaxy-now-artist">—</span></div>
+</footer>
+</div>
+<div id="galaxy-status" role="status"></div>
+<script src="galaxy_raven.js"></script>
+<script src="galaxy_cube.js"></script>
+<script src="galaxy_fleet.js"></script>
+<script src="galaxy-renderers.js"></script>
+<script src="galaxy-bridge.js"></script>
+<script src="galaxy-player.js"></script>
+<script src="galaxy-bookmarks.js"></script>
+</body>
+</html>

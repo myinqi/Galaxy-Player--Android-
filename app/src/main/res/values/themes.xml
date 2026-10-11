@@ -1,0 +1,10 @@
+<resources>
+    <style name="Theme.GalaxyPlayer" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@color/galaxy_bg</item>
+        <item name="android:navigationBarColor">@color/galaxy_bg</item>
+        <item name="android:windowBackground">@color/galaxy_bg</item>
+        <item name="colorPrimary">@color/galaxy_accent</item>
+        <item name="colorOnPrimary">#16091C</item>
+        <item name="android:textColor">@color/galaxy_ink</item>
+    </style>
+</resources>

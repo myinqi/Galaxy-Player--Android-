@@ -1,0 +1,21 @@
+.gradle/
+.kotlin/
+build/
+local.properties
+.idea/
+*.iml
+captures/
+.cxx/
+.externalNativeBuild/
+*.apk
+*.aab
+.DS_Store
+
+# Secrets stay off the tree. The Betsy address may be committed.
+# The app token lives in the phone's private session file, not here.
+.env
+.env.*
+secrets.properties
+*.keystore
+*.jks
+session.json

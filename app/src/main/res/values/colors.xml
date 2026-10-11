@@ -1,0 +1,7 @@
+<resources>
+    <color name="galaxy_bg">#07040C</color>
+    <color name="galaxy_card">#130B1B</color>
+    <color name="galaxy_ink">#F7EFFB</color>
+    <color name="galaxy_muted">#AF9ABA</color>
+    <color name="galaxy_accent">#D946EF</color>
+</resources>

@@ -6,6 +6,10 @@ The phone app is the Betsy Galaxy Player: the same star map, shipyard, flight an
 
 Apple CarPlay cannot be shipped inside an Android app. A car with CarPlay needs a separate iOS app. This project connects to Android Auto.
 
+## Download
+
+The installable build is [Galaxy-Player.apk](Galaxy-Player.apk), version 1.0.0. Copy it to an Android phone and open it. Android asks once for permission to install from that source.
+
 ## Connect
 
 In Galaxy admin, open **Mobile app API**, enable the API and copy the token. It is shown once.

@@ -6,6 +6,8 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.webkit.JsResult
+import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -13,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.webkit.WebViewAssetLoader
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dev.betsy.galaxy.databinding.ActivityPlayerBinding
 import dev.betsy.galaxy.web.GalaxyJsBridge
 
@@ -48,6 +51,17 @@ class MainActivity : AppCompatActivity() {
         val assets = WebViewAssetLoader.Builder()
             .addPathHandler("/", WebViewAssetLoader.AssetsPathHandler(this))
             .build()
+        view.webChromeClient = object : WebChromeClient() {
+            override fun onJsConfirm(view: WebView, url: String, message: String, result: JsResult): Boolean {
+                showJsConfirm(message, result)
+                return true
+            }
+
+            override fun onJsAlert(view: WebView, url: String, message: String, result: JsResult): Boolean {
+                showJsConfirm(message, result, cancel = false)
+                return true
+            }
+        }
         view.webViewClient = object : WebViewClient() {
             override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest) =
                 assets.shouldInterceptRequest(request.url)
@@ -74,6 +88,27 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         web?.let { (application as GalaxyApp).director.detach(it) }
         super.onDestroy()
+    }
+
+    private fun showJsConfirm(message: String, result: JsResult, cancel: Boolean = true) {
+        if (isFinishing) {
+            result.cancel()
+            return
+        }
+        var answered = false
+        fun finish(ok: Boolean) {
+            if (answered) return
+            answered = true
+            if (ok) result.confirm() else result.cancel()
+        }
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setMessage(message)
+            .setPositiveButton(android.R.string.ok) { _, _ -> finish(true) }
+            .setOnCancelListener { finish(false) }
+        if (cancel) {
+            dialog.setNegativeButton(android.R.string.cancel) { _, _ -> finish(false) }
+        }
+        dialog.show()
     }
 
     private fun askToNotify() {

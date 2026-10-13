@@ -12,7 +12,10 @@
     if (!root) return;
     const items = (payload && payload.bookmarks) || [];
     const clear = document.getElementById("galaxy-bookmarks-clear");
-    if (clear) clear.hidden = !items.length;
+    if (clear) {
+      clear.hidden = !items.length;
+      if (!items.length) disarm();
+    }
     root.replaceChildren();
     if (!items.length) {
       const empty = document.createElement("p");
@@ -55,9 +58,23 @@
 
   window.galaxyRefreshBookmarks = refresh;
   const clear = document.getElementById("galaxy-bookmarks-clear");
+  let armed = false;
+  let armTimer = 0;
+  function disarm() {
+    armed = false;
+    window.clearTimeout(armTimer);
+    if (clear) clear.textContent = "Clear";
+  }
   if (clear) {
     clear.addEventListener("click", function () {
-      if (!window.confirm("Clear the bookmarks on this device?")) return;
+      if (!armed) {
+        armed = true;
+        clear.textContent = "Sure?";
+        window.clearTimeout(armTimer);
+        armTimer = window.setTimeout(disarm, 5000);
+        return;
+      }
+      disarm();
       try {
         const result = JSON.parse(GalaxyNative.request("POST", "/galaxy/api/bookmarks/clear", "") || "{}");
         if (typeof bookmarkKeys !== "undefined") bookmarkKeys = new Set(result.keys || []);
